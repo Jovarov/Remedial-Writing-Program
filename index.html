@@ -1,1 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Task</title>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Verdana, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="date"] {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-primary {
+            background: #e2e8f0;
+            color: black;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 16px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        
+        .writing-area {
+            width: 100%;
+            height: 70vh;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            resize: none;
+            margin-bottom: 20px;
+        }
+        
+        #writing-screen { display: none; }
+        #submit-screen { display: none; }
+        #correction-screen { display: none; }
+        
+        .fullscreen-mode {
+            background: white;
+            padding: 40px;
+        }
+        
+        .fullscreen-mode .writing-area {
+            height: calc(100vh - 200px);
+            border: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<!-- -------------------------------------- -->
+<!-- LOGIN SCREEN                           -->
+<!-- -------------------------------------- -->
+<div class="container" id="login-screen">
+    <h1>📝 Writing Task</h1>
+    <p class="subtitle">Enter your details to begin</p>
+
+    <div class="form-grid">
+        <div class="input-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="John" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Smith" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <label for="className">Class</label>
+            <input type="text" id="className" placeholder="3A" autocomplete="off">
+        </div>
+        <div class="input-group">
+            <label for="examDate">Date</label>
+            <input type="date" id="examDate" autocomplete="off">
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <strong>Important Instructions:</strong>
+        <ul>
+            <li>The task will open in fullscreen mode</li>
+            <li>Write at least 200 words</li>
+            <li>Do not switch tabs or exit fullscreen</li>
+            <li>Three violations = automatic submission</li>
+            <li>Spellcheck is disabled</li>
+        </ul>
+    </div>
+
+    <button class="btn btn-primary" id="startBtn" onclick="startExam()">Start Task in Fullscreen</button>
+
+    <div id="errorMsg" class="error-message" style="display:none;"></div>
+</div>
+
+
+
+<!-- -------------------------------------- -->
+<!-- WRITING SCREEN                          -->
+<!-- -------------------------------------- -->
+<div class="container fullscreen-mode" id="writing-screen">
+    <h1>Writing Task</h1>
+    <p class="subtitle" id="studentInfo"></p>
+
+    <textarea class="writing-area" id="essayText" spellcheck="false"
+        placeholder="Start writing your text here..."></textarea>
+
+    <div class="word-count" id="wordCount">Word count: 0</div>
+
+    <button class="btn btn-success" onclick="submitExam()">Submit Task</button>
+</div>
+
+
+
+<!-- -------------------------------------- -->
+<!-- PROCESSING SCREEN                       -->
+<!-- -------------------------------------- -->
+<div class="container" id="submit-screen">
+    <div class="success-message">
+        <h1>⌛ Generating Your Correction…</h1>
+        <p class="subtitle">This may take up to 1–2 minutes. Please wait.</p>
+    </div>
+</div>
+
+
+
+<!-- -------------------------------------- -->
+<!-- CORRECTION SCREEN                       -->
+<!-- -------------------------------------- -->
+<div class="container" id="correction-screen">
+    <h1>✅ Your Correction</h1>
+    <p class="subtitle">Below is your corrected version. You can also download it as a DOCX.</p>
+
+    <div id="correction-score"
+         style="margin:15px 0; font-size:18px; font-weight:600; color:#2c3e50;">
+    </div>
+
+    <div id="correction-output"
+         style="border:2px solid #e2e8f0; padding:20px; border-radius:8px;
+                background:white; font-family: Georgia, serif; line-height:1.8;
+                min-height:200px;">
+    </div>
+
+    <button class="btn btn-primary" id="downloadDocxBtn" style="margin-top:20px;">
+        Download Correction as DOCX
+    </button>
+</div>
+
+
+
+
+<!-- -------------------------------------- -->
+<!-- JAVASCRIPT (unchanged except screen flow) -->
+<!-- -------------------------------------- -->
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuu-iLRM6m62uXQ0TvNhToY5OHE9Soov-DVtGILCCZvc1yX0RXZGTb3j5-xl57WSDFCg/exec";
+
+let studentFirstName = "";
+let studentLastName = "";
+let studentClass = "";
+let examDate = "";
+let wordCount = 0;
+let startTime;
+let isFraud = false;
+let tabSwitches = 0;
+let warnings = 0;
+
+// Today's date default
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("examDate").value =
+        new Date().toISOString().split("T")[0];
+});
+
+
+// START EXAM
+function startExam() {
+    const first = document.getElementById("firstName").value.trim();
+    const last = document.getElementById("lastName").value.trim();
+    const cls = document.getElementById("className").value.trim();
+    const date = document.getElementById("examDate").value;
+
+    if (!first || !last || !cls || !date) {
+        showError("Please fill in all fields before starting.");
+        return;
+    }
+
+    studentFirstName = first;
+    studentLastName = last;
+    studentClass = cls;
+    examDate = date;
+
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("writing-screen").style.display = "block";
+
+    document.getElementById("studentInfo").textContent =
+        `${first} ${last} — Class ${cls}`;
+
+    document.getElementById("essayText").focus();
+
+    startTime = new Date();
+}
+
+
+// SUBMIT EXAM
+function submitExam() {
+    const text = document.getElementById("essayText").value.trim();
+
+    document.getElementById("writing-screen").style.display = "none";
+    document.getElementById("submit-screen").style.display = "block";
+
+    const formData = new FormData();
+    formData.append("firstName", studentFirstName);
+    formData.append("lastName", studentLastName);
+    formData.append("className", studentClass);
+    formData.append("examDate", examDate);
+    formData.append("essayText", text);
+    formData.append("wordCount", wordCount);
+    formData.append("duration",
+        Math.floor((new Date() - startTime) / 1000));
+    formData.append("warnings", warnings);
+    formData.append("tabSwitches", tabSwitches);
+    formData.append("isFraud", isFraud);
+    formData.append("timestamp", new Date().toISOString());
+
+    fetch(SCRIPT_URL, { method: "POST", body: formData })
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById("submit-screen").style.display = "none";
+            document.getElementById("correction-screen").style.display = "block";
+
+            document.getElementById("correction-score").textContent =
+                `Mistakes: ${data.redCount} — Language Score: ${data.languageScore}/15`;
+
+            document.getElementById("correction-output").innerHTML =
+                data.correctedHtml;
+
+            document.getElementById("downloadDocxBtn").onclick = () =>
+                window.open(data.docxUrl, "_blank");
+        });
+}
+
+function showError(msg) {
+    const e = document.getElementById("errorMsg");
+    e.textContent = msg;
+    e.style.display = "block";
+}
+</script>
+
+</body>
+</html>
