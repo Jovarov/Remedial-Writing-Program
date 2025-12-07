@@ -6,19 +6,15 @@
     <title>Writing Task</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin:0; padding:0; box-sizing:border-box; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Verdana, sans-serif;
             background: #000000;
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -27,110 +23,87 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 40px;
         }
-        
+
         h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 36px;
+            color:#2c3e50;
+            font-size:36px;
+            margin-bottom:10px;
         }
-        
+
         .subtitle {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 16px;
+            color:#7f8c8d;
+            margin-bottom:30px;
         }
-        
+
         .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+            margin-bottom:25px;
         }
-        
-        .input-group {
-            display: flex;
-            flex-direction: column;
+
+        .input-group { display:flex; flex-direction:column; }
+        label { margin-bottom:8px; font-size:14px; font-weight:600; }
+
+        input[type="text"], input[type="date"] {
+            padding:12px 16px;
+            border:2px solid #e2e8f0;
+            border-radius:8px;
+            font-size:16px;
+            transition:0.3s;
         }
-        
-        label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 14px;
+
+        input[type="text"]:focus, input[type="date"]:focus {
+            outline:none;
+            border-color:#3498db;
+            box-shadow:0 0 0 3px rgba(52,152,219,0.1);
         }
-        
-        input[type="text"],
-        input[type="date"] {
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        input[type="text"]:focus,
-        input[type="date"]:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
-        }
-        
+
         .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+            width:100%; padding:16px;
+            border:none; border-radius:8px;
+            font-size:18px; font-weight:600;
+            cursor:pointer; margin-top:10px;
         }
-        
-        .btn-primary {
-            background: #e2e8f0;
-            color: black;
-        }
-        
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-        
+
+        .btn-primary { background:#e2e8f0; color:black; }
+        .btn-success { background:#27ae60; color:white; }
+
         .warning-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 16px;
-            margin-bottom: 25px;
-            border-radius: 4px;
+            background:#fff3cd;
+            border-left:4px solid #ffc107;
+            padding:16px;
+            margin-bottom:25px;
         }
-        
+
         .writing-area {
-            width: 100%;
-            height: 70vh;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: Georgia, 'Times New Roman', serif;
-            line-height: 1.8;
-            resize: none;
-            margin-bottom: 20px;
+            width:100%;
+            height:70vh;
+            padding:20px;
+            border:2px solid #e2e8f0;
+            border-radius:8px;
+            font-size:16px;
+            font-family:Georgia, serif;
+            line-height:1.8;
+            resize:none;
+            margin-bottom:20px;
         }
-        
-        #writing-screen { display: none; }
-        #submit-screen { display: none; }
-        #correction-screen { display: none; }
-        
+
+        .word-count { text-align:right; font-size:14px; color:#7f8c8d; }
+        .word-count.low { color:#e74c3c; }
+        .word-count.good { color:#27ae60; }
+
+        #writing-screen, #submit-screen, #correction-screen { display:none; }
+
         .fullscreen-mode {
-            background: white;
-            padding: 40px;
+            background:white;
+            padding:40px;
         }
-        
+
         .fullscreen-mode .writing-area {
-            height: calc(100vh - 200px);
-            border: none;
-            font-size: 18px;
+            height:calc(100vh - 200px);
+            border:none;
+            font-size:18px;
         }
     </style>
 </head>
@@ -138,29 +111,27 @@
 
 <body>
 
-<!-- -------------------------------------- -->
-<!-- LOGIN SCREEN                           -->
-<!-- -------------------------------------- -->
+<!-- LOGIN SCREEN -->
 <div class="container" id="login-screen">
     <h1>📝 Writing Task</h1>
     <p class="subtitle">Enter your details to begin</p>
 
     <div class="form-grid">
         <div class="input-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" placeholder="John" autocomplete="off">
+            <label>First Name</label>
+            <input id="firstName" type="text">
         </div>
         <div class="input-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" placeholder="Smith" autocomplete="off">
+            <label>Last Name</label>
+            <input id="lastName" type="text">
         </div>
         <div class="input-group">
-            <label for="className">Class</label>
-            <input type="text" id="className" placeholder="3A" autocomplete="off">
+            <label>Class</label>
+            <input id="className" type="text">
         </div>
         <div class="input-group">
-            <label for="examDate">Date</label>
-            <input type="date" id="examDate" autocomplete="off">
+            <label>Date</label>
+            <input id="examDate" type="date">
         </div>
     </div>
 
@@ -175,120 +146,168 @@
         </ul>
     </div>
 
-    <button class="btn btn-primary" id="startBtn" onclick="startExam()">Start Task in Fullscreen</button>
-
-    <div id="errorMsg" class="error-message" style="display:none;"></div>
+    <button class="btn btn-primary" onclick="startExam()">Start Task</button>
+    <div id="errorMsg" style="display:none; color:#c53030; margin-top:10px;"></div>
 </div>
 
 
 
-<!-- -------------------------------------- -->
-<!-- WRITING SCREEN                          -->
-<!-- -------------------------------------- -->
+<!-- WRITING SCREEN -->
 <div class="container fullscreen-mode" id="writing-screen">
     <h1>Writing Task</h1>
     <p class="subtitle" id="studentInfo"></p>
 
-    <textarea class="writing-area" id="essayText" spellcheck="false"
-        placeholder="Start writing your text here..."></textarea>
+    <textarea id="essayText" class="writing-area" spellcheck="false"></textarea>
 
-    <div class="word-count" id="wordCount">Word count: 0</div>
+    <div id="wordCount" class="word-count">Word count: 0</div>
 
     <button class="btn btn-success" onclick="submitExam()">Submit Task</button>
 </div>
 
 
 
-<!-- -------------------------------------- -->
-<!-- PROCESSING SCREEN                       -->
-<!-- -------------------------------------- -->
+<!-- PROCESSING SCREEN -->
 <div class="container" id="submit-screen">
-    <div class="success-message">
-        <h1>⌛ Generating Your Correction…</h1>
-        <p class="subtitle">This may take up to 1–2 minutes. Please wait.</p>
-    </div>
+    <h1>⌛ Generating Your Correction…</h1>
+    <p class="subtitle">This may take up to 1–2 minutes.</p>
 </div>
 
 
 
-<!-- -------------------------------------- -->
-<!-- CORRECTION SCREEN                       -->
-<!-- -------------------------------------- -->
+<!-- CORRECTION SCREEN -->
 <div class="container" id="correction-screen">
     <h1>✅ Your Correction</h1>
     <p class="subtitle">Below is your corrected version. You can also download it as a DOCX.</p>
 
     <div id="correction-score"
-         style="margin:15px 0; font-size:18px; font-weight:600; color:#2c3e50;">
-    </div>
+         style="margin:15px 0; font-size:18px; font-weight:600;"></div>
 
     <div id="correction-output"
          style="border:2px solid #e2e8f0; padding:20px; border-radius:8px;
-                background:white; font-family: Georgia, serif; line-height:1.8;
-                min-height:200px;">
+                background:white; font-family:Georgia, serif; line-height:1.8;">
     </div>
 
-    <button class="btn btn-primary" id="downloadDocxBtn" style="margin-top:20px;">
-        Download Correction as DOCX
+    <button id="downloadDocxBtn" class="btn btn-primary" style="margin-top:20px;">
+        Download DOCX
     </button>
 </div>
 
 
 
-
-<!-- -------------------------------------- -->
-<!-- JAVASCRIPT (unchanged except screen flow) -->
-<!-- -------------------------------------- -->
 <script>
+/* ---------------- CONFIGURATION ---------------- */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyuu-iLRM6m62uXQ0TvNhToY5OHE9Soov-DVtGILCCZvc1yX0RXZGTb3j5-xl57WSDFCg/exec";
 
-let studentFirstName = "";
-let studentLastName = "";
-let studentClass = "";
-let examDate = "";
-let wordCount = 0;
-let startTime;
-let isFraud = false;
-let tabSwitches = 0;
-let warnings = 0;
+/* ---------------- STATE VARIABLES ---------------- */
+let studentFirstName="", studentLastName="", studentClass="", examDate="";
+let warnings=0, tabSwitches=0, isFraud=false, startTime=null, wordCount=0;
 
-// Today's date default
+
+/* ---------------- DATE DEFAULT ---------------- */
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("examDate").value =
         new Date().toISOString().split("T")[0];
 });
 
 
-// START EXAM
-function startExam() {
-    const first = document.getElementById("firstName").value.trim();
-    const last = document.getElementById("lastName").value.trim();
-    const cls = document.getElementById("className").value.trim();
-    const date = document.getElementById("examDate").value;
+/* ---------------- WORD COUNTER ---------------- */
+document.addEventListener("input", e => {
+    if (e.target.id !== "essayText") return;
 
-    if (!first || !last || !cls || !date) {
-        showError("Please fill in all fields before starting.");
+    const text = e.target.value.trim();
+    wordCount = text.length > 0 ? text.split(/\s+/).length : 0;
+
+    const wc = document.getElementById("wordCount");
+    wc.textContent = `Word count: ${wordCount}`;
+    wc.className = "word-count " + (wordCount < 200 ? "low" : "good");
+});
+
+
+/* ---------------- ANTI-CHEAT: FULLSCREEN ---------------- */
+document.addEventListener("fullscreenchange", () => {
+    if (document.getElementById("writing-screen").style.display !== "block") return;
+    if (document.fullscreenElement || isFraud) return;
+
+    warnings++;
+
+    if (warnings >= 3) {
+        isFraud = true;
+        alert("💀 You exited fullscreen too many times.");
+        submitExam();
         return;
     }
 
-    studentFirstName = first;
-    studentLastName = last;
-    studentClass = cls;
-    examDate = date;
+    alert("🧐 Do not exit fullscreen!");
+    enterFullscreen();
+});
+
+
+/* ---------------- ANTI-CHEAT: TAB SWITCH ---------------- */
+document.addEventListener("visibilitychange", () => {
+    if (document.getElementById("writing-screen").style.display !== "block") return;
+    if (!document.hidden || isFraud) return;
+
+    warnings++;
+    tabSwitches++;
+
+    if (warnings >= 3) {
+        isFraud = true;
+        alert("💀 Too many tab switches.");
+        submitExam();
+        return;
+    }
+
+    alert("🧐 Switching tabs is not allowed!");
+});
+
+
+/* ---------------- BEFORE UNLOAD ---------------- */
+window.addEventListener("beforeunload", e => {
+    if (document.getElementById("writing-screen").style.display === "block") {
+        e.preventDefault();
+        e.returnValue = "";
+    }
+});
+
+
+/* ---------------- FULLSCREEN ---------------- */
+function enterFullscreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+}
+
+
+/* ---------------- START EXAM ---------------- */
+function startExam() {
+    const fn = document.getElementById("firstName").value.trim();
+    const ln = document.getElementById("lastName").value.trim();
+    const cn = document.getElementById("className").value.trim();
+    const dt = document.getElementById("examDate").value;
+
+    if (!fn || !ln || !cn || !dt) {
+        document.getElementById("errorMsg").textContent =
+            "Please fill in all fields.";
+        document.getElementById("errorMsg").style.display = "block";
+        return;
+    }
+
+    studentFirstName = fn;
+    studentLastName = ln;
+    studentClass = cn;
+    examDate = dt;
+
+    enterFullscreen();
 
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("writing-screen").style.display = "block";
-
-    document.getElementById("studentInfo").textContent =
-        `${first} ${last} — Class ${cls}`;
-
+    document.getElementById("studentInfo").textContent = `${fn} ${ln} — Class ${cn}`;
     document.getElementById("essayText").focus();
 
     startTime = new Date();
 }
 
 
-// SUBMIT EXAM
+/* ---------------- SUBMIT EXAM ---------------- */
 function submitExam() {
     const text = document.getElementById("essayText").value.trim();
 
@@ -302,14 +321,14 @@ function submitExam() {
     formData.append("examDate", examDate);
     formData.append("essayText", text);
     formData.append("wordCount", wordCount);
-    formData.append("duration",
-        Math.floor((new Date() - startTime) / 1000));
     formData.append("warnings", warnings);
     formData.append("tabSwitches", tabSwitches);
     formData.append("isFraud", isFraud);
+    formData.append("duration",
+        Math.floor((new Date() - startTime) / 1000));
     formData.append("timestamp", new Date().toISOString());
 
-    fetch(SCRIPT_URL, { method: "POST", body: formData })
+    fetch(SCRIPT_URL, { method:"POST", body:formData })
         .then(r => r.json())
         .then(data => {
             document.getElementById("submit-screen").style.display = "none";
@@ -323,13 +342,9 @@ function submitExam() {
 
             document.getElementById("downloadDocxBtn").onclick = () =>
                 window.open(data.docxUrl, "_blank");
-        });
-}
 
-function showError(msg) {
-    const e = document.getElementById("errorMsg");
-    e.textContent = msg;
-    e.style.display = "block";
+            if (document.exitFullscreen) document.exitFullscreen();
+        });
 }
 </script>
 
