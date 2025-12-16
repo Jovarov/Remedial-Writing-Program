@@ -334,8 +334,9 @@ function submitExam() {
             document.getElementById("submit-screen").style.display = "none";
             document.getElementById("correction-screen").style.display = "block";
 
-            document.getElementById("correction-score").textContent =
-                `Mistakes: ${data.redCount} — Language Score: ${data.languageScore}/15`;
+            document.getElementById('correction-score').textContent =
+              `Mistakes: ${data.mistakeCount}`;
+
 
             document.getElementById("correction-output").innerHTML =
                 data.correctedHtml;
